@@ -9,7 +9,7 @@
  * Revised on : 30/11/2021
  * Version    : V0.0.1
  *
- * Brief      : Serial Port Communication (RS232) for UNIX envernment.
+ * Brief      : Serial Port Communication (RS232) for UNIX environment.
  *
  * Reference  : -> https://www.cmrr.umn.edu/~strupp/serial.html#basics
  *
@@ -28,16 +28,20 @@
 
 #include "SerialPort.h"
 
+// #define DEBUGPRINT
+
+#ifdef DEBUGPRINT
+#include <stdarg.h>
+#endif
+
+#define CFILE "SERIAL.C"
+
 /**************************************************************************************************************************/
 /* Macro Declarations                                                                                                     */
 /**************************************************************************************************************************/
 #define ZERO 0
 #define NUL 0
 #define ONE 1
-
-#define PORT_FAIL -1
-#define DATA_INVALID -1
-#define BUFF_OVERLOAD -1
 
 /**************************************************************************************************************************/
 /* Typedef, Enums, Structures and Union Declarations                                                                      */
@@ -53,6 +57,8 @@
 int open_serialPort(char *port);
 void config_serialPort(int fd, int baudrate);
 int convert_baudrate(int baudrate);
+
+static void logger(const char *format, ...);
 
 /**************************************************************************************************************************/
 /* Main Program                                                                                                           */
@@ -72,13 +78,14 @@ int convert_baudrate(int baudrate);
  */
 int init_serialPort(char *port, int baudrate)
 {
-    printf("Initializing the serial port.\n");
+    logger("Initializing the serial port.\n");
 
     // Open Serial Port
     int fd = open_serialPort(port);
 
-    // Config Serial Port
-    config_serialPort(fd, baudrate);
+    if (fd != SERIAL_PORT_FAILED)
+        // Config Serial Port
+        config_serialPort(fd, baudrate);
 
     return fd;
 }
@@ -94,16 +101,16 @@ int open_serialPort(char *port)
     int fd; /* File descriptor for the port */
 
     fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);
-    if (fd == PORT_FAIL)
+    if (fd == SERIAL_PORT_FAILED)
     {
         // Could not open the port.
-        printf("open_port: Unable to open %s - \n", port);
+        logger("open_port: Unable to open %s - \n", port);
     }
     else
     {
-        printf("Serial Port Opened.\n");
+        logger("Serial Port Opened.\n");
 
-        // Seeting up the Receive port till the complete byte receive.
+        // Setting up the Receive port till the complete byte receive.
         fcntl(fd, F_SETFL, ZERO);
     }
 
@@ -118,7 +125,7 @@ int open_serialPort(char *port)
  */
 void config_serialPort(int fd, int baudrate)
 {
-    printf("Configuring the serial port.\n");
+    logger("Configuring the serial port.\n");
 
     // Setting up the serial port options...
     struct termios options;
@@ -170,18 +177,18 @@ int write_serialPort(int fd, char *buffer)
         if (bytes < ZERO)
         {
             // Could not write into the port.
-            printf("Error Writing the %d Bytes!\n", len);
+            logger("Error Writing the %d Bytes!\n", len);
         }
         else
         {
-            printf("%d Bytes Write into the Port Successfully.\n", len);
+            logger("%d Bytes Write into the Port Successfully.\n", len);
         }
         return bytes;
     }
     else
     {
-        printf("Buffer Overloaded %d Bytes!, Max Buff Size is: %d Bytes\n", len, MAX_BUFF);
-        return BUFF_OVERLOAD;
+        logger("Buffer Overloaded %d Bytes!, Max Buff Size is: %d Bytes\n", len, MAX_BUFF);
+        return SErIAL_BUFF_OVERLOAD;
     }
 }
 
@@ -198,10 +205,10 @@ BYTE read_serialPort(int fd)
 
     bytes = read(fd, &rxByte, ONE);
 
-    if (bytes < ZERO)
+    if (bytes <= ZERO)
     {
         // Could not read the port.
-        printf("Error Reading the Bytes!\n");
+        logger("Error Reading the Bytes!\n");
         return NUL;
     }
     else
@@ -213,8 +220,8 @@ BYTE read_serialPort(int fd)
 /**
  * @brief Returns the actual macro for the given Baudrate.
  *
- * @param baudrate  -> Baudrate in Deceimal.
- * @return int      -> Actual baudrate Maco.
+ * @param baudrate  -> Baudrate in Decimal.
+ * @return int      -> Actual baudrate Macro.
  */
 int convert_baudrate(int baudrate)
 {
@@ -254,6 +261,27 @@ int convert_baudrate(int baudrate)
         break;
     }
     return BRate;
+}
+
+/*-------------------------------------------------------------------------------------------------*/
+/**
+ * @brief Debug log function
+ *
+ * @param format    -> Print data format based on standard stdio.
+ * @param ...
+ */
+static void logger(const char *format, ...)
+{
+#ifdef DEBUG
+    printf("[%s]", "DBUG");
+
+    va_list arg;
+    va_start(arg, format);
+    vprintf(format, arg);
+    va_end(arg);
+
+    printf("\r\n");
+#endif
 }
 /**************************************************************************************************************************/
 /* End of File                                                                                                            */

@@ -9,7 +9,7 @@
  * Revised on : 30/11/2021
  * Version    : V0.0.1
  * 
- * Brief      : Serial Port Communication (RS232) for UNIX envernment.
+ * Brief      : Serial Port Communication (RS232) for UNIX environment.
  * 
  * Reference  : -> https://www.cmrr.umn.edu/~strupp/serial.html#basics
  * 
@@ -19,13 +19,16 @@
  * Copyright (c) 2021 Dhanush.K
  */
 /**************************************************************************************************************************/
-#ifndef _SERIALPORT_H_
-#define _SERIALPORT_H_
+#ifndef _SERIAL_PORT_H_
+#define _SERIAL_PORT_H_
 
 /**************************************************************************************************************************/
 /* Macro Declarations                                                                                                     */
 /**************************************************************************************************************************/
-#define MAX_BUFF 1024   // 1KB Data we can Transmit. Modify here to increase the size.
+#define SERIAL_PORT_FAILED -1
+#define SErIAL_BUFF_OVERLOAD -1
+
+#define MAX_BUFF 4096   // 4KB Data we can Transmit. Modify here to increase the size.
 
 /**************************************************************************************************************************/
 /* Typedef, Enums, Structures and Union Declarations                                                                      */
@@ -65,7 +68,7 @@ int write_serialPort(int fd, char *buffer);
  */
 BYTE read_serialPort(int fd);
 
-#endif // _SERIALPORT_H_
+#endif // _SERIAL_PORT_H_
 /**************************************************************************************************************************/
 /* End of File                                                                                                            */
 /**************************************************************************************************************************/
