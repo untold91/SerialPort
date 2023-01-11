@@ -26,7 +26,7 @@
 #include <errno.h>   /* Error number definitions */
 #include <termios.h> /* POSIX terminal control definitions */
 
-#include "SerialPort.h"
+#include "serialPort.h"
 
 // #define DEBUGPRINT
 

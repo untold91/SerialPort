@@ -29,7 +29,7 @@ APP = SERIAL_PORT
 # Target files
 TARGETS = \
 Main.c \
-src/SerialPort.c
+src/serialPort.c
 
 # Run time Auguments
 RUN_ARUG = \
@@ -60,6 +60,7 @@ all: clean $(APP)
 
 # Build Application
 $(APP):
+	@mkdir -p $(BUILD_PATH)
 	$(CC_C) $(MARCO_ARUG) $(CFLAGS) $(TARGETS) -o $(BUILD_PATH)$(APP)_APP $(LIB_ARUG)
 
 # Run the Application

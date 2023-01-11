@@ -27,7 +27,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "./src/SerialPort.h"
+#include "./src/serialPort.h"
 
 /**************************************************************************************************************************/
 /* Macro Declarations                                                                                                     */
