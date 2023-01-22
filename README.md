@@ -21,4 +21,4 @@ Serial Port Driver Application for UNIX system. Use `init_serialPort` function t
 
 <p align="left"><img src="markdownSrc/DK_Logo.jpg" alt="Mark Text" width="40"></p>
 
-dhanushsandy98@gmail.com | Dhanush.K
+dhanushsandy91@gmail.com | Dhanush.K

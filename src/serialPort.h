@@ -3,7 +3,7 @@
 /**************************************************************************************************************************/
 /* Project    : Serial Port
  * File Name  : SerialPort.h
- * Author     : Dhanush.K (dhanushsandy98@gmail.com)
+ * Author     : Dhanush.K (dhanushsandy91@gmail.com)
  * Date       : 30/11/2021
  * 
  * Revised on : 30/11/2021
